@@ -1,0 +1,1 @@
+If you have a stream timer that follows through to a URL, you must be online for this to work.
