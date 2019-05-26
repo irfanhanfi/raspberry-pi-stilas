@@ -60,5 +60,6 @@ echo "========================="
 chmod +x $SCRIPT_DIR/start.sh
 chmod +x $SCRIPT_DIR/stilas-usb-mount.sh
 chmod +x $SCRIPT_DIR/stilas/wifi-connect.sh
+chmod +x $SCRIPT_DIR/stilas/set_boot_config.sh
 
 echo "Finished!"
