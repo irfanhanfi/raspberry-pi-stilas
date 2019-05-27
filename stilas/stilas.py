@@ -80,7 +80,7 @@ else:
     shouldReboot=update_hdmi_setting(bootConfigFilePath, localConfigFilePath, pdStilasFolder, rootFolderPath)
     if (shouldReboot):
         print('restart')
-        subprocess.Popen(["/bin/sh", "reboot", "-r", "now"])
+        os.system('shutdown -r now')
         exit(); 
         
 # Check root RPI stilas folder is present or not on PD if not hen create 
