@@ -23,7 +23,7 @@ mv "$3.bak" "$3"
 }
 
 
-CONFIG_PATH=config.txt 
+CONFIG_PATH=/boot/config.txt
 [ -e $CONFIG_PATH ] || touch $CONFIG_PATH
 
 set_config_var "$1" "$2" $CONFIG_PATH

@@ -19,7 +19,7 @@ def have_internet():
         conn.close()
         return False
         
-def update_hdmi_setting(bcPath, lcPath, pdPath, rfPath):
+def update_hdmi_setting(bcPath, lcPath, pdsPath, rfPath):
     with open(bcPath, 'r') as f:
         config_string = '[dummy_section]\n' + f.read()
     oldConfig = configparser.ConfigParser()
@@ -37,9 +37,10 @@ def update_hdmi_setting(bcPath, lcPath, pdPath, rfPath):
             old_value = oldConfig.get('dummy_section', attr)
         if old_value != new_value:
             if not valuesChanged:
-                shutil.copy(bcPath, pdPath + "/backup/"+ os.path.basename(bcPath) + "-" + time.strftime("%Y%m%d-%H%M%S") +".txt")
+                shutil.copy(bcPath, pdsPath + "/backup/"+ os.path.splitext(os.path.basename(bcPath))[0] + "-" + time.strftime("%Y%m%d%H%M%S") +".txt")
                 valuesChanged = True
             subprocess.Popen(["/bin/sh", rfPath + "/set_boot_config.sh", attr, new_value])
+            time.sleep(.2)
     return valuesChanged
         
 #Folder name
@@ -70,12 +71,18 @@ if not os.path.isfile(pdStilasFolder + "/stilas_readme.txt"):
 if not os.path.isfile(localConfigFilePath): 
     shutil.copy(rootFolderPath+"/stilas_config.ini", localConfigFilePath)
 else:
-    shouldReboot=update_hdmi_setting(bootConfigFilePath, localConfigFilePath, pendrivePath, rootFolderPath)
+    if not os.path.isdir(pdStilasFolder + '/backup'):
+        try:
+            original_umask = os.umask(0)
+            os.makedirs(pdStilasFolder + '/backup')
+        finally:
+            os.umask(original_umask)
+    shouldReboot=update_hdmi_setting(bootConfigFilePath, localConfigFilePath, pdStilasFolder, rootFolderPath)
     if (shouldReboot):
-        subprocess.Popen(["/bin/sh", "shutdown", "-r", "now"])
-        exit();
-    
-    
+        print('restart')
+        subprocess.Popen(["/bin/sh", "reboot", "-r", "now"])
+        exit(); 
+        
 # Check root RPI stilas folder is present or not on PD if not hen create 
 if not os.path.isdir(pdStilasFolder + "/archived"):
     os.mkdir(pdStilasFolder + "/archived")
