@@ -137,5 +137,5 @@ else:
 print(defaultUrl)
 
 subprocess.Popen(["pkill", "-o", "chromium"])
-subprocess.Popen(["sudo", "-u", "pi", "chromium-browser", "--start-fullscreen", defaultUrl])#, "--disable-gpu", "--disable-software-rasterizer"
-
+subprocess.Popen(["sudo", "-u", "pi", "chromium-browser", "--start-fullscreen", "--kiosk", "--noerrdialogs", "--disable-translate", "--disable-infobars", "--disable-features=TranslateUI", defaultUrl])#, "--disable-gpu", "--disable-software-rasterizer"
+#chromium-browser http://streamtimer.com --start-fullscreen --incognito --noerrdialogs --disable-translate --no-first-run --fast --fast-start --disable-infobars --disable-features=TranslateUI
