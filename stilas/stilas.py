@@ -117,7 +117,7 @@ elif allFiles:
 
     # Check viewer.html file is present in live folder or not 
     if os.path.isfile(pdStilasFolder + "/live/viewer.html"): 
-        defaultUrl=pdStilasFolder + "/live/viewer.html"
+        defaultUrl="file://" + pdStilasFolder + "/live/viewer.html"
 
         # Opne the viewer.html file in browser with full screen
         #subprocess.Popen(["chromium-browser","--start-fullscreen",url,])
@@ -132,10 +132,13 @@ else:
     if os.path.isfile(pdStilasFolder + "/stilas.jpg"): 
         # Override the stilas.jpg file from RPI to pendrive
         shutil.copy(pdStilasFolder + "/stilas.jpg", rootFolderPath+"/stilas.jpg")
-    defaultUrl = rootFolderPath+"/stilas.jpg"
+    defaultUrl = "file://" + rootFolderPath+"/stilas.jpg"
 
 print(defaultUrl)
 
+defaultUrl2 = "--app=" + defaultUrl
+subprocess.Popen(["chromium-browser", "--no-startup-window", "--kiosk"])
 subprocess.Popen(["pkill", "-o", "chromium"])
-subprocess.Popen(["sudo", "-u", "pi", "chromium-browser", "--start-fullscreen", "--kiosk", "--noerrdialogs", "--disable-translate", "--disable-infobars", "--disable-features=TranslateUI", defaultUrl])#, "--disable-gpu", "--disable-software-rasterizer"
+subprocess.Popen(["sudo", "-u", "pi", "chromium-browser", "--start-fullscreen", "--kiosk", "--noerrdialogs", "--disable-translate", "--disable-infobars", "--disable-features=TranslateUI", defaultUrl2])
+#, "--disable-gpu", "--disable-software-rasterizer"
 #chromium-browser http://streamtimer.com --start-fullscreen --incognito --noerrdialogs --disable-translate --no-first-run --fast --fast-start --disable-infobars --disable-features=TranslateUI
